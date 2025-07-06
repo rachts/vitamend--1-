@@ -28,8 +28,10 @@ jobs:
           node-version: "18"
           cache: "pnpm"
 
-      - name: Install pnpm globally
-        run: npm install -g pnpm # This ensures pnpm is available in the PATH
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8 # specify your required version
 
       - name: Install dependencies
         run: pnpm install
@@ -44,7 +46,7 @@ jobs:
         run: pnpm test
         env:
           MONGODB_URI: mongodb://localhost:27017/vitamend-test
-          NEXTAUTH_SECRET: test-secret # Consider using GitHub Secrets for production
+          NEXTAUTH_SECRET: test-secret
 
       - name: Build application
         run: pnpm build && pnpm export
@@ -53,16 +55,13 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Install serve and start-server-and-test
-        # Ensure 'serve' and 'start-server-and-test' are in your package.json devDependencies
-        # or install them globally if preferred (e.g., pnpm add -g serve start-server-and-test)
-        run: pnpm install serve start-server-and-test # Install if not already in package.json
+        run: pnpm install serve start-server-and-test
 
       - name: Run E2E tests
-        # Use start-server-and-test to ensure the app is running before Playwright tests
         run: start-server-and-test "serve out -l 3000" http://localhost:3000 "npx playwright test"
         env:
           MONGODB_URI: mongodb://localhost:27017/vitamend-test
-          NEXTAUTH_SECRET: test-secret # Consider using GitHub Secrets for production
+          NEXTAUTH_SECRET: test-secret
 
   deploy:
     needs: test
@@ -81,7 +80,7 @@ jobs:
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: out # This path should match the output of 'pnpm export'
+          path: out
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
