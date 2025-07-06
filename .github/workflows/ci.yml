@@ -23,20 +23,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-- name: Setup Node.js
-  uses: actions/setup-node@v4
-  with:
-    node-version: "18"
-    cache: "pnpm"
 
-- name: Ensure clean PATH
-  run: echo "$HOME/.npm-global/bin" >> $GITHUB_PATH
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "pnpm"
 
-- name: Install pnpm
-  run: npm install -g pnpm
-
-
-    
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Install dependencies
         run: pnpm install
@@ -84,7 +79,7 @@ jobs:
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: out  # this is where `next export` outputs your static files
+          path: out
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
