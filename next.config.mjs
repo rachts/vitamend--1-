@@ -24,35 +24,28 @@ const nextConfig = {
       allowedOrigins: ["localhost:3000", "*.vercel.app"]
     },
   },
-  // Enable static exports for better GitHub Pages compatibility
-  output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
-  
-  // Optimize for deployment
+
+  // ✅ Static Export for GitHub Pages
+  output: 'export',
+
+  // GitHub Pages requires trailing slashes for routing
+  trailingSlash: true,
+
   compress: true,
   poweredByHeader: false,
-  
-  // Security headers
+
   async headers() {
     return [
       {
         source: '/(.*)',
         headers: [
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin',
-          },
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'origin-when-cross-origin' },
         ],
       },
-    ]
+    ];
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;
