@@ -36,12 +36,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      # Comment out or remove this step if ESLint is not configured
-      # - name: Run linting
-      #   run: pnpm lint
+      - name: Run linting
+        run: pnpm lint
 
-      - name: Run type checking
-        run: pnpm type-check
+      # Removed the type-check step since Next.js build includes type checking
+      # - name: Run type checking
+      #   run: pnpm type-check
 
       - name: Run unit tests
         run: pnpm test
