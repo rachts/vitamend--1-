@@ -65,14 +65,21 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
 
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
     steps:
       - uses: actions/checkout@v4
 
-  - name: Deploy to Vercel
-  uses: amondnet/vercel-action@v25
-  with:
-    vercel-token: ${{ secrets.VERCEL_TOKEN }}
-    vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-    vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-    vercel-args: "--prod"
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: out  # or dist if using a different folder
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
