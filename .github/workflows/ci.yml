@@ -28,10 +28,8 @@ jobs:
           node-version: "18"
           cache: "pnpm"
 
-      - name: Enable and install pnpm using Corepack
-        run: |
-          corepack enable
-          corepack prepare pnpm@latest --activate
+      - name: Install pnpm globally
+        run: npm install -g pnpm # This ensures pnpm is available in the PATH
 
       - name: Install dependencies
         run: pnpm install
