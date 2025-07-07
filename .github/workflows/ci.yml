@@ -36,11 +36,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Ensure Jest type definitions are installed
+        run: pnpm add -D @types/jest ts-node
+
       - name: Run linting (allow failure)
         run: pnpm lint || echo "Linting failed but continuing..."
         continue-on-error: true
 
-      - name: Run type checking
+      - name: TypeScript type-check (strict, with Jest types)
         run: pnpm type-check
 
       - name: Run unit tests
